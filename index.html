@@ -2,48 +2,13 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-
-    <!-- Favicon and App Icons -->
     <link rel="icon" type="image/png" href="/College_Logo_GDC.png" />
-    <link rel="apple-touch-icon" href="/icon-192x192.png" />
-    <link rel="manifest" href="/manifest.json" />
-    <meta name="theme-color" content="#004aad" />
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>GDC-2039 | College Management System</title>
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            colors: {
-              'brand-primary': '#004aad',
-              'brand-secondary': '#2563eb',
-            },
-            backgroundImage: {
-              'gradient-primary': 'linear-gradient(to right top, #3b82f6, #2563eb, #1d4ed8)',
-            }
-          }
-        }
-      }
-    </script>
 
-    <!-- React Import Map -->
-    <script type="importmap">
-      {
-        "imports": {
-          "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
-          "react/": "https://aistudiocdn.com/react@^19.2.0/",
-          "react": "https://aistudiocdn.com/react@^19.2.0",
-          "lucide-react": "https://aistudiocdn.com/lucide-react@^0.548.0",
-          "recharts": "https://aistudiocdn.com/recharts@^3.3.0"
-        }
-      }
-    </script>
-
-    <!-- App Styling -->
     <style>
       body {
         background: linear-gradient(to right top, #3b82f6, #2563eb, #1d4ed8);
@@ -52,7 +17,6 @@
         font-family: system-ui, -apple-system, sans-serif;
       }
 
-      /* Header Styles */
       header {
         position: fixed;
         top: 0;
@@ -60,10 +24,9 @@
         width: 100%;
         display: flex;
         align-items: center;
-        justify-content: center;
-        gap: 12px;
+        justify-content: space-between;
         background-color: rgba(255, 255, 255, 0.25);
-        padding: 10px 0;
+        padding: 10px 20px;
         z-index: 1000;
         backdrop-filter: blur(10px);
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
@@ -82,34 +45,119 @@
         letter-spacing: 0.5px;
       }
 
-      /* Push content below header */
-      #root {
-        padding-top: 90px;
+      nav a {
+        color: #004aad;
+        font-weight: 600;
+        text-decoration: none;
+        margin: 0 10px;
+        transition: color 0.2s ease-in-out;
       }
 
-      @media (max-width: 640px) {
-        header h1 {
-          font-size: 1.2rem;
+      nav a:hover {
+        color: #1d4ed8;
+      }
+
+      /* Mobile menu toggle */
+      .menu-btn {
+        display: none;
+        background: none;
+        border: none;
+        cursor: pointer;
+      }
+
+      .menu-btn svg {
+        width: 28px;
+        height: 28px;
+        color: #004aad;
+      }
+
+      .mobile-nav {
+        display: none;
+        flex-direction: column;
+        background: rgba(255, 255, 255, 0.9);
+        position: absolute;
+        top: 70px;
+        left: 0;
+        width: 100%;
+        text-align: center;
+        backdrop-filter: blur(8px);
+      }
+
+      .mobile-nav a {
+        padding: 12px;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+      }
+
+      #root {
+        padding-top: 100px;
+      }
+
+      @media (max-width: 768px) {
+        nav.desktop-nav {
+          display: none;
         }
-        header img {
-          width: 40px;
-          height: 40px;
+        .menu-btn {
+          display: block;
         }
       }
     </style>
   </head>
 
   <body>
-    <!-- Fixed Header with Logo + App Name -->
-    <header onclick="window.location.href='/'">
-      <img src="/College_Logo_GDC.png" alt="GDC Logo" />
-      <h1>GDC-2039</h1>
+    <!-- Header with Logo, Title, and Navigation -->
+    <header>
+      <div class="flex items-center gap-3 cursor-pointer" onclick="window.location.href='/'">
+        <img src="/College_Logo_GDC.png" alt="GDC Logo" />
+        <h1>GDC-2039</h1>
+      </div>
+
+      <!-- Desktop Navigation -->
+      <nav class="desktop-nav">
+        <a href="/login">Login</a>
+        <a href="/dashboard">Dashboard</a>
+        <a href="/faculty">Faculty</a>
+        <a href="/students">Students</a>
+        <a href="/about">About</a>
+      </nav>
+
+      <!-- Mobile Menu Button -->
+      <button class="menu-btn" onclick="toggleMenu()">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M4 6h16M4 12h16m-7 6h7" />
+        </svg>
+      </button>
     </header>
 
-    <!-- React Mount Point -->
+    <!-- Mobile Navigation -->
+    <nav class="mobile-nav" id="mobileMenu">
+      <a href="/login">Login</a>
+      <a href="/dashboard">Dashboard</a>
+      <a href="/faculty">Faculty</a>
+      <a href="/students">Students</a>
+      <a href="/about">About</a>
+    </nav>
+
+    <!-- Root App -->
     <div id="root"></div>
 
-    <!-- React Entry File -->
+    <!-- Script -->
+    <script>
+      function toggleMenu() {
+        const menu = document.getElementById("mobileMenu");
+        menu.style.display = menu.style.display === "flex" ? "none" : "flex";
+      }
+
+      // Keep header visible on all pages
+      window.addEventListener("popstate", showHeader);
+      window.addEventListener("hashchange", showHeader);
+      function showHeader() {
+        const header = document.querySelector("header");
+        if (header) header.style.display = "flex";
+      }
+    </script>
+
+    <!-- Your main app entry -->
     <script type="module" src="/index.tsx"></script>
   </body>
 </html>
