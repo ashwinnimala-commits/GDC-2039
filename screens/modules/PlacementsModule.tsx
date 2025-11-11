@@ -76,7 +76,6 @@ const PlacementFormModal: React.FC<{
     );
 };
 
-// FIX: Explicitly type the 'config' parameter to prevent TypeScript from inferring a wider 'string' type for its properties.
 const useSortableData = (items: Placement[], config: { key: keyof Placement, direction: 'ascending' | 'descending' } = { key: 'date', direction: 'descending' }) => {
     const [sortConfig, setSortConfig] = useState<{key: keyof Placement, direction: 'ascending' | 'descending'} | null>(config);
 

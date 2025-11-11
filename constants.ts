@@ -292,13 +292,10 @@ export const EXAM_RESULTS_DATA: ExamResult[] = STUDENTS_DATA.slice(0, 10).flatMa
     if (!course) return [];
     return course.subjects.slice(0, 3).map((subject, j) => {
         const internalMarks = 15 + (i % 10);
-        // FIX: The original calculation resulted in all students passing.
         // This new calculation creates a wider range of marks for more realistic data.
-        const externalMarks = 25 + (i * 5) - (j * 10);
+        const externalMarks = 25 + (i * 5) - (j * 10); 
         const totalMarks = internalMarks + externalMarks;
-        // FIX: The original grading logic did not account for a failing grade ('F'),
-        // which caused a type error in the `result` calculation. This has been updated
-        // to include 'F' for marks below 40.
+        // This updated grading logic now includes a failing grade ('F').
         const grade = totalMarks > 80 ? 'A' : totalMarks > 60 ? 'B' : totalMarks > 50 ? 'C' : totalMarks >= 40 ? 'D' : 'F';
         return {
             id: `ER-${student.id}-${subject}`,

@@ -6,7 +6,6 @@ import { COURSES_DATA } from '../../constants';
 import { Plus, Edit, Trash2, X, Upload, ChevronDown, ChevronUp } from 'lucide-react';
 
 // Reusable sorting hook
-// FIX: Explicitly type the 'config' parameter to prevent TypeScript from inferring a wider 'string' type for its properties.
 const useSortableData = (items: StudentData[], config: { key: keyof StudentData, direction: 'ascending' | 'descending' } = { key: 'name', direction: 'ascending' }) => {
     const [sortConfig, setSortConfig] = useState<{key: keyof StudentData, direction: 'ascending' | 'descending'} | null>(config);
 

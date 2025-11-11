@@ -72,8 +72,6 @@ export const PrincipalDashboard: React.FC = () => {
                             outerRadius={100}
                             fill="#8884d8"
                             dataKey="value"
-                            // FIX: The 'percent' prop from recharts can be a non-numeric type, causing an arithmetic error.
-                            // Explicitly cast `percent` to a number and provide a fallback of 0 to ensure the operation is safe.
                             label={({ name, percent }) => `${name} ${((Number(percent) || 0) * 100).toFixed(0)}%`}
                           >
                             {feeData.map((entry, index) => (

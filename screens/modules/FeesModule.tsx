@@ -13,7 +13,6 @@ const getStatusBadge = (status: 'Paid' | 'Pending' | 'Overdue') => {
 };
 
 type SortableFeeRecord = FeeRecord & { studentName?: string };
-// FIX: Explicitly type the 'config' parameter to prevent TypeScript from inferring a wider 'string' type for its properties.
 const useSortableData = (items: SortableFeeRecord[], config: { key: keyof SortableFeeRecord, direction: 'ascending' | 'descending' } = { key: 'dueDate', direction: 'descending' }) => {
     const [sortConfig, setSortConfig] = useState<{key: keyof SortableFeeRecord, direction: 'ascending' | 'descending'} | null>(config);
 
