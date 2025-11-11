@@ -43,36 +43,70 @@
       }
     </script>
 
-    <!-- Centered Logo Styling -->
+    <!-- App Styling -->
     <style>
       body {
         background: linear-gradient(to right top, #3b82f6, #2563eb, #1d4ed8);
         min-height: 100vh;
         margin: 0;
+        font-family: system-ui, -apple-system, sans-serif;
       }
-      .app-logo {
-        text-align: center;
-        margin-top: 20px;
-        cursor: pointer;
+
+      /* Header Styles */
+      header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        background-color: rgba(255, 255, 255, 0.25);
+        padding: 10px 0;
+        z-index: 1000;
+        backdrop-filter: blur(10px);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
       }
-      .app-logo img {
-        width: 120px;
-        border-radius: 16px;
-        transition: transform 0.2s ease-in-out;
+
+      header img {
+        width: 48px;
+        height: 48px;
+        border-radius: 12px;
       }
-      .app-logo img:hover {
-        transform: scale(1.05);
+
+      header h1 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #004aad;
+        letter-spacing: 0.5px;
+      }
+
+      /* Push content below header */
+      #root {
+        padding-top: 90px;
+      }
+
+      @media (max-width: 640px) {
+        header h1 {
+          font-size: 1.2rem;
+        }
+        header img {
+          width: 40px;
+          height: 40px;
+        }
       }
     </style>
   </head>
 
   <body>
-    <!-- Clickable Logo (visible on all pages) -->
-    <div class="app-logo" onclick="window.location.href='/'">
+    <!-- Fixed Header with Logo + App Name -->
+    <header onclick="window.location.href='/'">
       <img src="/College_Logo_GDC.png" alt="GDC Logo" />
-    </div>
+      <h1>GDC-2039</h1>
+    </header>
 
-    <!-- React Root Mount -->
+    <!-- React Mount Point -->
     <div id="root"></div>
 
     <!-- React Entry File -->
