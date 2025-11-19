@@ -1,7 +1,9 @@
+
 import React, { useState, ReactNode } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { UserRole } from '../types';
 import { Menu, X, Home, Bell, Users, BookOpen, DollarSign, LogOut, FileText, Calendar, Briefcase, HelpCircle, GraduationCap, Shield, ClipboardList, User } from 'lucide-react';
+import { COLLEGE_LOGO_URL } from '../constants';
 
 import { PrincipalDashboard } from './dashboards/PrincipalDashboard';
 import { StudentDashboard } from './dashboards/StudentDashboard';
@@ -100,7 +102,7 @@ const Dashboard: React.FC = () => {
             {/* Sidebar */}
             <aside className={`absolute md:relative z-20 flex flex-col h-full bg-gradient-to-b from-brand-primary to-brand-secondary text-white transition-transform duration-300 ease-in-out ${isSidebarOpen ? 'w-64' : 'w-0 -translate-x-full'} md:translate-x-0 md:w-64 overflow-y-auto`}>
                 <div className="flex items-center justify-center p-6 border-b border-purple-500">
-                    <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI0OCIgZmlsbD0iIzRmNDZlNSIgc3Ryb2tlPSIjZmZmZmZmIiBzdHJva2Utd2lkdGg9IjQiIC8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIzMCIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IndoaXRlIj5HREM8L3RleHQ+PC9zdmc+" alt="College Logo" className="w-12 h-12 rounded-full object-cover"/>
+                    <img src={COLLEGE_LOGO_URL} alt="College Logo" className="w-12 h-12 rounded-full object-cover"/>
                     <span className="ml-3 text-xl font-bold">GDC Kukatpally</span>
                 </div>
                 <nav className="flex-1 p-4 space-y-2">

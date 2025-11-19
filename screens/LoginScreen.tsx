@@ -1,6 +1,7 @@
+
 import React, { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
-import { DEMO_USERS } from '../constants';
+import { DEMO_USERS, COLLEGE_LOGO_URL } from '../constants';
 import { UserRole } from '../types';
 
 interface LoginScreenProps {
@@ -42,9 +43,11 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ onNavigateToRegister, onNavig
     <div className="flex items-center justify-center min-h-screen bg-gradient-primary">
       <div className="w-full max-w-md p-8 space-y-8 bg-white rounded-2xl shadow-2xl m-4">
         <div className="text-center">
-            <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI0OCIgZmlsbD0iIzRmNDZlNSIgc3Ryb2tlPSIjZmZmZmZmIiBzdHJva2Utd2lkdGg9IjQiIC8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIzMCIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IndoaXRlIj5HREM8L3RleHQ+PC9zdmc+" alt="College Logo" className="w-24 h-24 mx-auto mb-4 rounded-full object-cover"/>
+            <img src={COLLEGE_LOGO_URL} alt="College Logo" className="w-24 h-24 mx-auto mb-4 rounded-full object-cover shadow-md"/>
           <h1 className="text-3xl font-bold text-gray-900">GDC Kukatpally</h1>
-          <p className="mt-2 text-sm text-gray-600">College Management System</p>
+          <p className="mt-3 text-sm font-serif italic font-semibold text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-pink-600 tracking-wider">
+            "Quality learning within everyone’s reach"
+          </p>
         </div>
         <form className="mt-8 space-y-6" onSubmit={handleLogin}>
           <div className="rounded-md shadow-sm -space-y-px">

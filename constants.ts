@@ -1,4 +1,7 @@
+
 import { User, UserRole, StudentData, Faculty, Notification, Course, TimeTableEntry, LMSMaterial, FeeRecord, Placement, HelpDeskTicket, AttendanceRecord, Exam, ExamSchedule, ExamResult, ExamRegistration } from './types';
+
+export const COLLEGE_LOGO_URL = "data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='grad' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%231d4ed8;stop-opacity:1'/%3E%3Cstop offset='100%25' style='stop-color:%231e3a8a;stop-opacity:1'/%3E%3C/linearGradient%3E%3Cfilter id='shadow'%3E%3CfeDropShadow dx='0' dy='2' stdDeviation='2' flood-opacity='0.3'/%3E%3C/filter%3E%3C/defs%3E%3Ccircle cx='50' cy='50' r='46' fill='url(%23grad)' stroke='%23fbbf24' stroke-width='4'/%3E%3Cpath d='M25 40 C 25 40, 35 45, 50 40 C 65 45, 75 40, 75 40 V 70 C 75 70, 65 75, 50 70 C 35 75, 25 70, 25 70 Z' fill='none' stroke='white' stroke-width='1.5' opacity='0.2'/%3E%3Cline x1='50' y1='40' x2='50' y2='70' stroke='white' stroke-width='1' opacity='0.2'/%3E%3Ccircle cx='50' cy='50' r='38' fill='none' stroke='white' stroke-width='1' stroke-dasharray='4 3' opacity='0.4'/%3E%3Ctext x='50' y='45' font-family='Verdana, sans-serif' font-weight='900' font-size='28' fill='white' text-anchor='middle' filter='url(%23shadow)'%3EGDC%3C/text%3E%3Crect x='40' y='53' width='20' height='3' rx='1.5' fill='%23fbbf24'/%3E%3Ctext x='50' y='75' font-family='Verdana, sans-serif' font-weight='bold' font-size='14' fill='%23fbbf24' text-anchor='middle' letter-spacing='1'%3E2039%3C/text%3E%3C/svg%3E";
 
 export const DEMO_USERS: User[] = [
   { id: '1', name: 'Dr. Chandana N', email: 'principal@kgc.edu', password: 'Chandana@123', role: UserRole.Principal, photoUrl: `https://i.pravatar.cc/150?u=1` },
@@ -28,15 +31,20 @@ const studentNames = [
 ];
 
 export const STUDENTS_DATA: StudentData[] = Array.from({ length: 50 }, (_, i) => {
-    const name = studentNames[i];
+    const name = studentNames[i] || `Student ${i + 1}`;
     const firstName = name.split(' ')[0].toLowerCase();
     const course = COURSES_DATA[i % COURSES_DATA.length];
+    
+    // FIX: Ensure the first student (Ravi Kumar) has the email matching the DEMO_USER login
+    // This connects the login account to the student data record
+    const email = i === 0 ? 'ravi.k@student.kgc.edu' : `${firstName}.${1001 + i}@student.kgc.edu`;
+
     return {
         id: `S${101 + i}`,
         name: name,
         rollNumber: `23-KGC-${1001 + i}`,
         studentId: `KGC${2023001 + i}`,
-        email: `${firstName}.${1001 + i}@student.kgc.edu`,
+        email: email,
         phone: `987654${1000 + i}`,
         course: course.name,
         year: (i % 3) + 1,
@@ -62,6 +70,14 @@ export const FACULTY_DATA: Faculty[] = [
     };
 });
 
+const generatedNotifications = Array.from({ length: 13 }, (_, i) => ({
+    id: `N${String(i + 8).padStart(2, '0')}`,
+    title: `Sample Notification ${i+8}`,
+    content: `This is the content for sample notification number ${i+8}.`,
+    date: `2023-10-${20-i}`,
+    author: 'Admin Department'
+}));
+
 export const NOTIFICATIONS_DATA: Notification[] = [
     { id: 'N01', title: 'Internal Exams Schedule', content: 'Internal exams for all semesters will be conducted from 15th December.', date: '2023-11-20', author: 'Examinations Branch' },
     { id: 'N02', title: 'Holiday Declaration', content: 'The college will remain closed on 25th December for Christmas.', date: '2023-11-18', author: 'Principal Office' },
@@ -70,16 +86,9 @@ export const NOTIFICATIONS_DATA: Notification[] = [
     { id: 'N05', title: 'Library Books Return', content: 'All students must return their library books before 10th December.', date: '2023-11-05', author: 'Library' },
     { id: 'N06', title: 'Guest Lecture on AI', content: 'A guest lecture on "The Future of Artificial Intelligence" is scheduled for Dec 2nd.', date: '2023-11-22', author: 'Dept. of Computer Science' },
     { id: 'N07', title: 'NSS Camp Registration', content: 'Registrations for the upcoming NSS camp are now open.', date: '2023-11-21', author: 'NSS Coordinator' },
-     ...Array.from({ length: 13 }, (_, i) => ({
-        id: `N${String(i + 8).padStart(2, '0')}`,
-        title: `Sample Notification ${i+8}`,
-        content: `This is the content for sample notification number ${i+8}.`,
-        date: `2023-10-${20-i}`,
-        author: 'Admin Department'
-    })),
+    ...generatedNotifications
 ];
 
-// --- Expanded Timetable Data ---
 const facultyByDept = FACULTY_DATA.reduce((acc, f) => {
     if (!acc[f.department]) acc[f.department] = [];
     acc[f.department].push(f.name);
@@ -156,7 +165,6 @@ export const LMS_DATA: LMSMaterial[] = Array.from({ length: 25 }, (_, i) => {
 
 export const FEES_DATA: FeeRecord[] = STUDENTS_DATA.flatMap((student, i) => {
     const records: FeeRecord[] = [];
-    const feeTypes: FeeRecord['type'][] = ['Tuition Fee', 'Exam Fee', 'Special Fee'];
     const amounts = { 'Tuition Fee': 1250, 'Exam Fee': 500, 'Special Fee': 250 };
 
     records.push({
@@ -194,7 +202,7 @@ export const FEES_DATA: FeeRecord[] = STUDENTS_DATA.flatMap((student, i) => {
 
 
 export const PLACEMENTS_DATA: Placement[] = STUDENTS_DATA.filter(s => s.year === 3)
-    .slice(0, 15) // Increased number of placements
+    .slice(0, 15)
     .map((student, i) => {
     const companies = ['TCS', 'Infosys', 'Wipro', 'Deloitte', 'Accenture', 'Capgemini', 'HCL Tech', 'Cognizant'];
     return {
@@ -204,11 +212,11 @@ export const PLACEMENTS_DATA: Placement[] = STUDENTS_DATA.filter(s => s.year ===
         company: companies[i % companies.length],
         package: parseFloat((4.5 + (i % 8) * 0.25).toFixed(2)),
         date: `2024-03-${10 + i}`
-    }
+    };
 });
 
 export const HELPDESK_TICKETS_DATA: HelpDeskTicket[] = STUDENTS_DATA.filter((s, i) => i % 3 === 0)
-    .slice(0, 15) // Increased number of tickets
+    .slice(0, 15)
     .map((student, i) => {
     const subjects = ['Fee Payment Issue', 'Library Book Not Found', 'ID Card Lost', 'Exam Result Discrepancy', 'LMS Login Problem', 'Bonafide Certificate Request', 'Timetable Clarification'];
     const statuses: HelpDeskTicket['status'][] = ['Open', 'In Progress', 'Closed'];
@@ -223,25 +231,41 @@ export const HELPDESK_TICKETS_DATA: HelpDeskTicket[] = STUDENTS_DATA.filter((s, 
     };
 });
 
+// Generate 30 days of attendance data
 export const ATTENDANCE_DATA: AttendanceRecord[] = STUDENTS_DATA.flatMap(student => {
     const course = COURSES_DATA.find(c => c.name === student.course);
     if (!course) return [];
 
     const records: AttendanceRecord[] = [];
-    const subjects = course.subjects.slice(0, 3); // Take first 3 subjects for demo
-    const dates = ['2023-11-20', '2023-11-21', '2023-11-22', '2023-11-23', '2023-11-24'];
-
-    dates.forEach(date => {
+    // Use first 3 subjects for attendance tracking
+    const subjects = course.subjects.slice(0, 3); 
+    
+    const today = new Date();
+    // Generate for past 30 days
+    for (let i = 0; i < 30; i++) {
+        const date = new Date(today);
+        date.setDate(today.getDate() - i);
+        
+        // Skip weekends (0 is Sunday, 6 is Saturday)
+        if (date.getDay() === 0 || date.getDay() === 6) continue;
+        
+        const dateString = date.toISOString().split('T')[0];
+        
         subjects.forEach(subject => {
+            // Every 10th student has lower attendance (At Risk simulation)
+            const studentIndex = parseInt(student.id.replace('S', '')) || 0;
+            const baseRate = (studentIndex % 10 === 0) ? 0.6 : 0.9; 
+            const isPresent = Math.random() < baseRate;
+            
             records.push({
-                id: `ATT-${student.id}-${date}-${subject.replace(/\s/g, '')}`,
+                id: `ATT-${student.id}-${dateString}-${subject.replace(/\s/g, '')}`,
                 studentId: student.id,
-                date,
+                date: dateString,
                 subject,
-                status: Math.random() > 0.15 ? 'Present' : 'Absent' // 85% present rate
+                status: isPresent ? 'Present' : 'Absent'
             });
         });
-    });
+    }
 
     return records;
 });
@@ -250,38 +274,31 @@ const today = new Date();
 const formatDate = (date: Date) => date.toISOString().split('T')[0];
 
 export const EXAMS_DATA: Omit<Exam, 'status'>[] = [
-    // A completed exam from last semester
     { id: 'E1', name: 'Semester I Main Examinations', startDate: '2024-05-20', endDate: '2024-05-28', registrationDeadline: '2024-04-25' },
-    // An exam that is currently open for registration
     { id: 'E2', name: 'Internal Assessment I - Sem 2', 
-      registrationDeadline: formatDate(new Date(today.getTime() + 10 * 24 * 60 * 60 * 1000)), // 10 days from now
-      startDate: formatDate(new Date(today.getTime() + 20 * 24 * 60 * 60 * 1000)), // 20 days from now
-      endDate: formatDate(new Date(today.getTime() + 23 * 24 * 60 * 60 * 1000)) // 23 days from now
+      registrationDeadline: formatDate(new Date(today.getTime() + 10 * 24 * 60 * 60 * 1000)),
+      startDate: formatDate(new Date(today.getTime() + 20 * 24 * 60 * 60 * 1000)),
+      endDate: formatDate(new Date(today.getTime() + 23 * 24 * 60 * 60 * 1000))
     },
-    // An upcoming exam where registration has closed
     { id: 'E3', name: 'Internal Assessment II - Sem 2', 
-      registrationDeadline: formatDate(new Date(today.getTime() - 5 * 24 * 60 * 60 * 1000)), // 5 days ago
-      startDate: formatDate(new Date(today.getTime() + 5 * 24 * 60 * 60 * 1000)), // 5 days from now
-      endDate: formatDate(new Date(today.getTime() + 8 * 24 * 60 * 60 * 1000)) // 8 days from now
+      registrationDeadline: formatDate(new Date(today.getTime() - 5 * 24 * 60 * 60 * 1000)),
+      startDate: formatDate(new Date(today.getTime() + 5 * 24 * 60 * 60 * 1000)),
+      endDate: formatDate(new Date(today.getTime() + 8 * 24 * 60 * 60 * 1000))
     },
-    // An ongoing exam
     { id: 'E4', name: 'Practical Examinations', 
-      registrationDeadline: formatDate(new Date(today.getTime() - 20 * 24 * 60 * 60 * 1000)), // 20 days ago
-      startDate: formatDate(new Date(today.getTime() - 2 * 24 * 60 * 60 * 1000)), // 2 days ago
-      endDate: formatDate(new Date(today.getTime() + 2 * 24 * 60 * 60 * 1000)) // 2 days from now
+      registrationDeadline: formatDate(new Date(today.getTime() - 20 * 24 * 60 * 60 * 1000)),
+      startDate: formatDate(new Date(today.getTime() - 2 * 24 * 60 * 60 * 1000)),
+      endDate: formatDate(new Date(today.getTime() + 2 * 24 * 60 * 60 * 1000))
     },
 ];
 
 
 export const EXAM_SCHEDULES_DATA: ExamSchedule[] = [
-    // B.Sc. (MPCs) - Y1 - Internal Assessment I
     { id: 'ES1', examId: 'E1', courseId: 'C1', year: 1, subject: 'Maths', date: '2024-05-20', time: '10:00 - 11:00', room: '101' },
     { id: 'ES2', examId: 'E1', courseId: 'C1', year: 1, subject: 'Physics', date: '2024-05-21', time: '10:00 - 11:00', room: '102' },
     { id: 'ES3', examId: 'E1', courseId: 'C1', year: 1, subject: 'Computer Science', date: '2024-05-22', time: '10:00 - 11:00', room: 'Lab 1' },
-    // B.Com (General) - Y1 - Internal Assessment I
     { id: 'ES4', examId: 'E1', courseId: 'C2', year: 1, subject: 'Financial Accounting', date: '2024-05-20', time: '10:00 - 11:00', room: '201' },
     { id: 'ES5', examId: 'E1', courseId: 'C2', year: 1, subject: 'Business Organization', date: '2024-05-21', time: '10:00 - 11:00', room: '202' },
-    // A few schedules for the new exams
     { id: 'ES6', examId: 'E2', courseId: 'C1', year: 2, subject: 'Maths', date: EXAMS_DATA[1].startDate, time: '10:00 - 11:00', room: '101' },
     { id: 'ES7', examId: 'E2', courseId: 'C1', year: 2, subject: 'Physics', date: formatDate(new Date(new Date(EXAMS_DATA[1].startDate).getTime() + 1 * 24 * 60 * 60 * 1000)), time: '10:00 - 11:00', room: '102' },
     { id: 'ES8', examId: 'E4', courseId: 'C1', year: 3, subject: 'Computer Science', date: formatDate(today), time: '10:00 - 13:00', room: 'Lab 3' },
@@ -292,10 +309,8 @@ export const EXAM_RESULTS_DATA: ExamResult[] = STUDENTS_DATA.slice(0, 10).flatMa
     if (!course) return [];
     return course.subjects.slice(0, 3).map((subject, j) => {
         const internalMarks = 15 + (i % 10);
-        // This new calculation creates a wider range of marks for more realistic data.
         const externalMarks = 25 + (i * 5) - (j * 10); 
         const totalMarks = internalMarks + externalMarks;
-        // This updated grading logic now includes a failing grade ('F').
         const grade = totalMarks > 80 ? 'A' : totalMarks > 60 ? 'B' : totalMarks > 50 ? 'C' : totalMarks >= 40 ? 'D' : 'F';
         return {
             id: `ER-${student.id}-${subject}`,
